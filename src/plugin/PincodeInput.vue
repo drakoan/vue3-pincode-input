@@ -92,6 +92,7 @@ export default {
   methods: {
     init() {
       this.inputs = this.initialInputs();
+      // eslint-disable-next-line guard-for-in
       for (const index in this.inputs) {
         this.setInputWatcher(index);
       }

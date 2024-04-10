@@ -19,6 +19,7 @@ export default defineConfig({
   build: {
     lib: {
       // Could also be a dictionary or array of multiple entry points
+      // eslint-disable-next-line no-undef
       entry: resolve(__dirname, 'src/plugin/main.js'),
       name: 'VuePincodeInput',
       // the proper extensions will be added
