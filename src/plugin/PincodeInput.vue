@@ -93,12 +93,13 @@ export default {
       for (let i = 0; i < this.inputs.length; i++) this.setInputWatcher(i);
     },
     focusPreviousInput() {
-      if (!this.focusedInputIndex) return;
+      if (this.focusedInputIndex === 0) return;
       this.focusInputByIndex(this.focusedInputIndex - 1);
     },
     focusNextInput() {
-      if (this.focusedInputIndex === this.digits - 1) return;
-      this.focusInputByIndex(this.focusedInputIndex + 1);
+      const nextIndex = this.focusedInputIndex + 1;
+      if (nextIndex === this.digits) return;
+      this.focusInputByIndex(nextIndex);
     },
     focusInputByIndex(index) {
       const ref = `${this.baseRefName}${index}`;
