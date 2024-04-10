@@ -139,15 +139,12 @@ export default {
         (newVal, oldVal) => this.hadleInputChange(index, newVal, oldVal)
       );
     },
-    isInputValid(str, allowEmpty = true) {
-      if (!str) {
-        return allowEmpty ? str === '' : false;
-      }
-      return !!str.match('^\\d{1}$');
+    isInputValid(str) {
+      return !str ? false : !!str.match('^\\d{1}$');
     },
-    hadleInputChange(index, newVal, oldVal) {
+    hadleInputChange(index, newVal, _oldVal) {
       this.$emit('update:modelValue', this.inputs.join(''));
-      if (!this.isInputValid(newVal, false)) {
+      if (!this.isInputValid(newVal)) {
         this.inputs[index] = '';
         return;
       }
