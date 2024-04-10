@@ -170,14 +170,14 @@ export default {
       }
     },
     initialInputs() {
-      return this.modelValue ?
-        this.modelValue.length <= this.digits ?
-          [
-            ...this.modelValue,
-            ...[...Array(this.digits - this.modelValue.length)].map(() => ''),
-          ] :
-          [...this.modelValue.slice(0, this.digits)] :
-        [...Array(this.digits)].map(() => '');
+      if (!this.modelValue) return Array(this.digits).fill('');
+
+      const difLength = this.digits - this.modelValue.length;
+      if (difLength === 0) return [...this.modelValue];
+
+      return difLength < 0 ?
+        [...this.modelValue.slice(0, this.digits)] :
+        [...this.modelValue, ...(Array(difLength).fill(''))];
     },
     reset() {
       this.unwatchInputs();
