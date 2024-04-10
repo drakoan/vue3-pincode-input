@@ -11,8 +11,8 @@
       class="vue-pincode-input"
       :class="[inputClasses, spacingClass]"
       @focus="focusedInputIndex = index"
-      @keydown.delete="hadleDelete(index, $event)"
-      @keydown="hadleKeyDown($event, index)"
+      @keydown.delete="handleDelete(index, $event)"
+      @keydown="handleKeyDown($event, index)"
     />
   </div>
 </template>
@@ -109,7 +109,7 @@ export default {
       }
       this.focusedInputIndex = index;
     },
-    hadleKeyDown(e) {
+    handleKeyDown(e) {
       switch (e.keyCode) {
       /* left arrow key */
       case 37:
@@ -133,13 +133,13 @@ export default {
       const watchingProperty = `inputs.${index}`;
       this.watchers[watchingProperty] = this.$watch(
         watchingProperty,
-        (newVal, oldVal) => this.hadleInputChange(index, newVal, oldVal)
+        (newVal, oldVal) => this.handleInputChange(index, newVal, oldVal)
       );
     },
     isInputValid(str) {
       return !str && str !== 0 ? false : !!str.match('^\\d{1}$');
     },
-    hadleInputChange(index, newVal, _oldVal) {
+    handleInputChange(index, newVal, _oldVal) {
       this.$emit('update:modelValue', this.inputs.join(''));
       if (!this.isInputValid(newVal)) {
         this.inputs[index] = '';
@@ -159,7 +159,7 @@ export default {
     pinfocus(ref) {
       this.$refs[ref][0].focus();
     },
-    hadleDelete(index, e) {
+    handleDelete(index, e) {
       const isThisCellFilled = this.inputs[index].length;
       if (!isThisCellFilled) {
         this.focusPreviousInput();
