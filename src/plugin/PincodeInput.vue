@@ -147,17 +147,16 @@ export default {
     },
     handleInputChange(index, newVal) {
       this.$emit('update:modelValue', this.inputs.join(''));
-      if (!this.isInputValid(newVal)) {
-        this.inputs[index] = '';
-        return;
-      }
-      // Check all input filled
-      if (+index === this.digits - 1) {
-        const inputNotFillIndex = this.inputs.findIndex((v) => !v);
-        inputNotFillIndex !== -1 && this.focusInputByIndex(inputNotFillIndex);
-        return;
-      }
-      this.focusNextInput();
+      if (!this.isInputValid(newVal)) return this.inputs[index] = '';
+      // Check all input filled, but only on last input filled
+      // TODO: refact to
+      // 1.separate fn, auto focusing another input;
+      // 2. add feat of focusing first empty input on all cases
+      const isLastInputFocused = +index === this.digits - 1;
+      if (!isLastInputFocused) return this.focusNextInput();
+  
+      const firstEmptyInputIndex = this.inputs.findIndex(v => !v);
+      if (firstEmptyInputIndex !== -1) this.focusInputByIndex(firstEmptyInputIndex);
     },
     handleFocus(ref) {
       this.$refs[ref][0].setSelectionRange(1, 1);
