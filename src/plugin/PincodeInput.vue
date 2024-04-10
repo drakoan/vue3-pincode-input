@@ -140,7 +140,7 @@ export default {
       );
     },
     isInputValid(str) {
-      return !str ? false : !!str.match('^\\d{1}$');
+      return !str && str !== 0 ? false : !!str.match('^\\d{1}$');
     },
     hadleInputChange(index, newVal, _oldVal) {
       this.$emit('update:modelValue', this.inputs.join(''));
