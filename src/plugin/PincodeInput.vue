@@ -80,10 +80,8 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.init();
-      if (this.autofocus) {
-        this.$refs['vue-pincode-input0'] &&
-          this.$refs['vue-pincode-input0'][0].focus();
-      }
+      const input0 = this.$refs['vue-pincode-input0'];
+      if (this.autofocus && input0) input0[0].focus();
     });
   },
   beforeUnmount() {
