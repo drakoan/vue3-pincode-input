@@ -139,13 +139,13 @@ export default {
       const watchingProperty = `inputs.${index}`;
       this.watchers[watchingProperty] = this.$watch(
         watchingProperty,
-        (newVal, oldVal) => this.handleInputChange(index, newVal, oldVal)
+        newVal => this.handleInputChange(index, newVal)
       );
     },
     isInputValid(str) {
       return !str && str !== 0 ? false : !!str.match('^\\d{1}$');
     },
-    handleInputChange(index, newVal, _oldVal) {
+    handleInputChange(index, newVal) {
       this.$emit('update:modelValue', this.inputs.join(''));
       if (!this.isInputValid(newVal)) {
         this.inputs[index] = '';
