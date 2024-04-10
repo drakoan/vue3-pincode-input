@@ -35,10 +35,7 @@ export default defineConfig({
         globals: {
           vue: 'Vue',
         },
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name == 'style.css') return 'main.css';
-          return assetInfo.name;
-        }
+        assetFileNames: ({ name }) => name === 'style.css' ? 'main.css' : name // Rename
       },
     },
   },
