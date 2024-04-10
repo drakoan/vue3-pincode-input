@@ -90,10 +90,7 @@ export default {
   methods: {
     init() {
       this.inputs = this.initialInputs();
-      // eslint-disable-next-line guard-for-in
-      for (const index in this.inputs) {
-        this.setInputWatcher(index);
-      }
+      for (let i = 0; i < this.inputs.length; i++) this.setInputWatcher(i);
     },
     focusPreviousInput() {
       if (!this.focusedInputIndex) return;
