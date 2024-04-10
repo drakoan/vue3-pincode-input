@@ -92,6 +92,7 @@ export default {
       this.inputs = this.initialInputs();
       for (let i = 0; i < this.inputs.length; i++) this.setInputWatcher(i);
     },
+    // TODO: refact with watch reactivity from this line:
     focusPreviousInput() {
       if (this.focusedInputIndex === 0) return;
       this.focusInputByIndex(this.focusedInputIndex - 1);
@@ -101,6 +102,7 @@ export default {
       if (nextIndex === this.digits) return;
       this.focusInputByIndex(nextIndex);
     },
+    // note: this method will have to react of focused input index:
     focusInputByIndex(index) {
       const ref = `${this.baseRefName}${index}`;
       const el = this.$refs[ref];
@@ -110,6 +112,9 @@ export default {
       }
       this.focusedInputIndex = index;
     },
+    // to upper line.
+    // end of code, which need to refact
+    // 
     handleKeyDown(e) {
       switch (e.keyCode) {
       /* left arrow key */
