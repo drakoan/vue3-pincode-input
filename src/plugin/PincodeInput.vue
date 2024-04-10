@@ -116,18 +116,17 @@ export default {
     // end of code, which need to refact
     // 
     handleKeyDown(e) {
+      // TODO: add DELETE btn with focus next input
       switch (e.keyCode) {
-      /* left arrow key */
-      case 37:
+      case 37: // left arrow key 
         return this.focusPreviousInput();
-        /* right arrow key */
-      case 39:
+      case 39: // right arrow key
         return this.focusNextInput();
       default:
         break;
       }
       const currVal = this.inputs[this.focusedInputIndex];
-      if (currVal) return (this.inputs[this.focusedInputIndex] = '');
+      if (currVal) return this.inputs[this.focusedInputIndex] = '';
       if (this.preview && this.secure) {
         e.target.type = 'tel';
         setTimeout(() => {
@@ -185,9 +184,10 @@ export default {
       this.unwatchInputs();
       this.init();
     },
+    // NOTE: maybe no need in composition API after refact?
     unwatchInputs() {
       const watchers = Object.keys(this.watchers);
-      watchers.forEach((name) => this.watchers[name]());
+      watchers.forEach(name => this.watchers[name]());
     },
   },
 };
