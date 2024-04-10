@@ -71,7 +71,7 @@ export default {
       return [
         this.inputClass || 'default',
         this.isValid ? this.successClass : '',
-      ].join(' ');
+      ].filter(cssClass => !!cssClass).join(' ');
     },
     isValid() {
       return this.inputs.join('').length === this.digits;
