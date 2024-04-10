@@ -19,11 +19,11 @@
 
 <script>
 export default {
-  name: "PincodeInput",
+  name: 'PincodeInput',
   props: {
     modelValue: {
       type: String,
-      default: "",
+      default: '',
     },
     digits: {
       type: Number,
@@ -31,7 +31,7 @@ export default {
     },
     placeholder: {
       type: String,
-      default: "",
+      default: '',
     },
     secure: {
       type: Boolean,
@@ -43,15 +43,15 @@ export default {
     },
     inputClass: {
       type: String,
-      default: "",
+      default: '',
     },
     successClass: {
       type: String,
-      default: "",
+      default: '',
     },
     spacingClass: {
       type: String,
-      default: "",
+      default: '',
     },
     preview: {
       type: Number,
@@ -60,7 +60,7 @@ export default {
   },
   data() {
     return {
-      baseRefName: "vue-pincode-input",
+      baseRefName: 'vue-pincode-input',
       focusedInputIndex: 0,
       watchers: {},
       inputs: this.initialInputs(),
@@ -69,30 +69,30 @@ export default {
   computed: {
     inputClasses() {
       return [
-        this.inputClass || "default",
-        this.isValid ? this.successClass : "",
-      ].join(" ");
+        this.inputClass || 'default',
+        this.isValid ? this.successClass : '',
+      ].join(' ');
     },
     isValid() {
-      return this.inputs.join("").length === this.digits;
+      return this.inputs.join('').length === this.digits;
     },
   },
   mounted() {
     this.$nextTick(() => {
       this.init();
       if (this.autofocus) {
-        this.$refs["vue-pincode-input0"] &&
-          this.$refs["vue-pincode-input0"][0].focus();
+        this.$refs['vue-pincode-input0'] &&
+          this.$refs['vue-pincode-input0'][0].focus();
       }
     });
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.unwatchInputs();
   },
   methods: {
     init() {
       this.inputs = this.initialInputs();
-      for (let index in this.inputs) {
+      for (const index in this.inputs) {
         this.setInputWatcher(index);
       }
     },
@@ -115,21 +115,21 @@ export default {
     },
     hadleKeyDown(e) {
       switch (e.keyCode) {
-        /* left arrow key */
-        case 37:
-          return this.focusPreviousInput();
+      /* left arrow key */
+      case 37:
+        return this.focusPreviousInput();
         /* right arrow key */
-        case 39:
-          return this.focusNextInput();
-        default:
-          break;
+      case 39:
+        return this.focusNextInput();
+      default:
+        break;
       }
       const currVal = this.inputs[this.focusedInputIndex];
-      if (currVal) return (this.inputs[this.focusedInputIndex] = "");
+      if (currVal) return (this.inputs[this.focusedInputIndex] = '');
       if (this.preview && this.secure) {
-        e.target.type = "tel";
+        e.target.type = 'tel';
         setTimeout(() => {
-          e.target.type = "password";
+          e.target.type = 'password';
         }, this.preview);
       }
     },
@@ -142,14 +142,14 @@ export default {
     },
     isInputValid(str, allowEmpty = true) {
       if (!str) {
-        return allowEmpty ? str === "" : false;
+        return allowEmpty ? str === '' : false;
       }
-      return !!str.match("^\\d{1}$");
+      return !!str.match('^\\d{1}$');
     },
     hadleInputChange(index, newVal, oldVal) {
-      this.$emit("update:modelValue", this.inputs.join(""));
+      this.$emit('update:modelValue', this.inputs.join(''));
       if (!this.isInputValid(newVal, false)) {
-        this.inputs[index] = "";
+        this.inputs[index] = '';
         return;
       }
       // Check all input filled
@@ -174,14 +174,14 @@ export default {
       }
     },
     initialInputs() {
-      return this.modelValue
-        ? this.modelValue.length <= this.digits
-          ? [
-              ...this.modelValue,
-              ...[...Array(this.digits - this.modelValue.length)].map(() => ""),
-            ]
-          : [...this.modelValue.slice(0, this.digits)]
-        : [...Array(this.digits)].map(() => "");
+      return this.modelValue ?
+        this.modelValue.length <= this.digits ?
+          [
+            ...this.modelValue,
+            ...[...Array(this.digits - this.modelValue.length)].map(() => ''),
+          ] :
+          [...this.modelValue.slice(0, this.digits)] :
+        [...Array(this.digits)].map(() => '');
     },
     reset() {
       this.unwatchInputs();

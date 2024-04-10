@@ -1,10 +1,10 @@
 <script setup>
-import VuePincodeInput from "./plugin/PincodeInput.vue";
-import { reactive } from "vue";
+import VuePincodeInput from './plugin/PincodeInput.vue';
+import { reactive } from 'vue';
 
 const pincode = reactive({
-  default: "",
-  custom: "",
+  default: '',
+  custom: '',
 });
 </script>
 
@@ -25,7 +25,8 @@ const pincode = reactive({
       <hr />
       <VuePincodeInput
         v-model="pincode.custom"
-        input-class="rounded-full w-18 h-18 text-3xl text-gray-500 border-2 border-gray-200 shadow"
+        input-class="rounded-full w-18 h-18 text-3xl
+          text-gray-500 border-2 border-gray-200 shadow"
         success-class="border-2 border-green-400"
         spacing-class="mr-2"
       />
@@ -33,7 +34,8 @@ const pincode = reactive({
       <div class="code-preview">
         {{ `<VuePincodeInput
           v-model="pincode"
-          input-class="rounded-full w-18 h-18 text-3xl text-gray-500 border-2 border-gray-200 shadow"
+          input-class="rounded-full w-18 h-18 text-3xl
+            text-gray-500 border-2 border-gray-200 shadow"
           success-class="border-2 border-green-400"
           spacing-class="mr-2"
           autofocus
