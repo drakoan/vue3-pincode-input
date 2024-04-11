@@ -4,17 +4,17 @@
     :class="`${CMP_NAME}-wrapper`"
   >
     <input
-      v-for="(_, index) in inputs" :key="index"
-      v-model.trim="inputs[index]"
-      :id="`${cmpName}-${index}`"
+      v-for="(_, id) in inputs" :key="id"
+      v-model.trim="inputs[id]"
+      :id="`${cmpName}-${id}`"
       :class="[CMP_NAME, inputClasses, spacingClass]"
-      :ref="el => setInputRef({ index, el })"
+      :ref="el => setInputRef({ id, el })"
       :type="secure ? 'password' : 'tel'"
       :placeholder="placeholder"
       maxlength="1"
-      @focus="() => choosenId = index"
-      @keydown.delete="handleDelete(index, $event)"
-      @keydown="handleKeyDown($event, index)"
+      @focus="() => choosenId = id"
+      @keydown.delete="handleDelete(id, $event)"
+      @keydown="handleKeyDown($event, id)"
     />
   </div>
 </template>
@@ -49,7 +49,7 @@ const watchers = ref({});
 const inputs = ref([]);
 const inputsRefs = ref({});
 
-const setInputRef = ({ el, index }) => inputsRefs.value[index] = el;
+const setInputRef = ({ el, id }) => inputsRefs.value[id] = el;
 
 const getInitialInputs = () => {
   const { modelValue, digits } = props;
@@ -63,9 +63,9 @@ const getInitialInputs = () => {
     [...modelValue, ...(Array(difLength).fill(''))];
 };
 
-const setInputWatcher = index => watchers.value[index] = watch(
-  () => inputs.value[index],
-  newVal => handleInputChange(index, newVal));
+const setInputWatcher = id => watchers.value[id] = watch(
+  () => inputs.value[id],
+  newVal => handleInputChange(id, newVal));
 
 const init = () => {
   inputs.value = getInitialInputs();
@@ -77,23 +77,23 @@ onMounted(() => nextTick(() => init()));
 // TODO: refact with watch reactivity from this line:
 const focusPreviousInput = () => {
   if (choosenId.value === 0) return;
-  focusInputByIndex(choosenId.value - 1);
+  focusInputById(choosenId.value - 1);
 };
 
 const focusNextInput = () => {
-  const nextIndex = choosenId.value + 1;
-  if (nextIndex === props.digits) return;
-  focusInputByIndex(nextIndex);
+  const nextId = choosenId.value + 1;
+  if (nextId === props.digits) return;
+  focusInputById(nextId);
 };
 
-// note: this method will have to react of focused input index:
-const focusInputByIndex = index => {
-  const el = inputsRefs.value[index];
+// note: this method will have to react of focused input id:
+const focusInputById = id => {
+  const el = inputsRefs.value[id];
   if (el) {
     el.focus();
     el.select();
   }
-  choosenId.value = index;
+  choosenId.value = id;
 };
 // to upper line.
 // end of code, which need to refact
@@ -123,22 +123,22 @@ const isInputValid = str => str ? !!str.match('^\\d{1}$') : false;
 
 const emits = defineEmits(['update:modelValue']);
 
-const handleInputChange = (index, newVal) => {
+const handleInputChange = (id, newVal) => {
   emits('update:modelValue', inputs.value.join(''));
-  if (!isInputValid(newVal)) return inputs.value[index] = '';
+  if (!isInputValid(newVal)) return inputs.value[id] = '';
   // Check all input filled, but only on last input filled
   // TODO: refact to
   // 1.separate fn, auto focusing another input;
   // 2. add feat of focusing first empty input on all cases
-  const isLastInputFocused = +index === props.digits - 1;
+  const isLastInputFocused = +id === props.digits - 1;
   if (!isLastInputFocused) return focusNextInput();
   
-  const firstEmptyInputIndex = inputs.value.findIndex(v => !v);
-  if (firstEmptyInputIndex !== -1) focusInputByIndex(firstEmptyInputIndex);
+  const firstEmptyInputId = inputs.value.findIndex(v => !v);
+  if (firstEmptyInputId !== -1) focusInputById(firstEmptyInputId);
 };
 
-const handleDelete = (index, e) => {
-  const isThisCellFilled = inputs.value[index].length;
+const handleDelete = (id, e) => {
+  const isThisCellFilled = inputs.value[id].length;
   if (!isThisCellFilled) {
     e.preventDefault();
     focusPreviousInput();
