@@ -1,9 +1,12 @@
 <template>
-  <div :class="`${CMP_NAME}-wrapper`">
+  <div
+    :id="cmpName"
+    :class="`${CMP_NAME}-wrapper`"
+  >
     <input
       v-for="(_, index) in inputs" :key="index"
       v-model.trim="inputs[index]"
-      :id="`${CMP_NAME}-${index}`"
+      :id="`${cmpName}-${index}`"
       :class="[CMP_NAME, inputClasses, spacingClass]"
       :ref="el => setInputRef({ index, el })"
       :type="secure ? 'password' : 'tel'"
@@ -22,6 +25,10 @@ import { computed, ref, watch, onMounted, nextTick } from 'vue';
 const CMP_NAME='vue-pincode-input';
 
 const props = defineProps({
+  cmpName: {
+    type: String,
+    default: () => `pincode-input-${Math.ceil(Math.random()*9999)}`
+  },
   modelValue: { type: String, default: '' },
   digits: {
     type: Number,
