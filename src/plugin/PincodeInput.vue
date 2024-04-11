@@ -2,6 +2,7 @@
   <div :class="`${CMP_NAME}-wrapper`">
     <input
       v-for="(_, index) in inputs" :key="index"
+      :id="`${CMP_NAME}-${index}`"
       :ref="el => setInputRef({ index, el })"
       v-model.trim="inputs[index]"
       :type="secure ? 'password' : 'tel'"
