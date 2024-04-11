@@ -9,7 +9,7 @@
       :type="secure ? 'password' : 'tel'"
       :placeholder="placeholder"
       maxlength="1"
-      @focus="focusedInputIndex = index"
+      @focus="() => choosenId = index"
       @keydown.delete="handleDelete(index, $event)"
       @keydown="handleKeyDown($event, index)"
     />
@@ -37,7 +37,7 @@ const props = defineProps({
   preview: { type: Number, default: 0 },
 });
 
-const focusedInputIndex = ref(0);
+const choosenId = ref(0);
 const watchers = ref({});
 const inputs = ref([]);
 const inputsRefs = ref({});
@@ -69,12 +69,12 @@ onMounted(() => nextTick(() => init()));
 
 // TODO: refact with watch reactivity from this line:
 const focusPreviousInput = () => {
-  if (focusedInputIndex.value === 0) return;
-  focusInputByIndex(focusedInputIndex.value - 1);
+  if (choosenId.value === 0) return;
+  focusInputByIndex(choosenId.value - 1);
 };
 
 const focusNextInput = () => {
-  const nextIndex = focusedInputIndex.value + 1;
+  const nextIndex = choosenId.value + 1;
   if (nextIndex === props.digits) return;
   focusInputByIndex(nextIndex);
 };
@@ -86,7 +86,7 @@ const focusInputByIndex = index => {
     el.focus();
     el.select();
   }
-  focusedInputIndex.value = index;
+  choosenId.value = index;
 };
 // to upper line.
 // end of code, which need to refact
@@ -102,8 +102,8 @@ const handleKeyDown = e => {
   default:
     break;
   }
-  const currVal = inputs.value[focusedInputIndex.value];
-  if (currVal) return inputs.value[focusedInputIndex.value] = '';
+  const currVal = inputs.value[choosenId.value];
+  if (currVal) return inputs.value[choosenId.value] = '';
 
   const { preview, secure } = props;
   if (preview && secure) {
