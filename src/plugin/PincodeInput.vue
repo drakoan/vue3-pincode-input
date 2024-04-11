@@ -66,7 +66,6 @@ onMounted(() => {
     if (props.autofocus && inputsRefs.value[0]) inputsRefs.value[0].focus();
   });
 });
-// const beforeUnmount = () => unwatchInputs();
 
 // TODO: refact with watch reactivity from this line:
 const focusPreviousInput = () => {
@@ -135,9 +134,6 @@ const handleInputChange = (index, newVal) => {
   if (firstEmptyInputIndex !== -1) focusInputByIndex(firstEmptyInputIndex);
 };
 
-const handleFocus = index => inputsRefs.value[index][0].setSelectionRange(1, 1);
-const pinfocus = index => inputsRefs.value[index][0].focus();
-
 const handleDelete = (index, e) => {
   const isThisCellFilled = inputs.value[index].length;
   if (!isThisCellFilled) {
@@ -145,15 +141,6 @@ const handleDelete = (index, e) => {
     focusPreviousInput();
   }
 };
-
-const reset = () => {
-  unwatchInputs();
-  init();
-};
-  
-// NOTE: maybe no need in composition API after refact?
-const unwatchInputs = () => Object.keys(watchers.value)
-  .forEach(name => watchers.value[name]());
 
 const inputClasses = computed(() => '' + props.inputClass +
   (isValid.value ? ' ' + props.successClass : ''));
