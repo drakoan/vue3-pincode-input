@@ -23,7 +23,11 @@ const CMP_NAME='vue-pincode-input';
 
 const props = defineProps({
   modelValue: { type: String, default: '' },
-  digits: { type: Number, default: 4 },
+  digits: {
+    type: Number,
+    default: 4,
+    validator: n => n > 0 && Number.isInteger(n)
+  },
   placeholder: { type: String, default: '' },
   secure: { type: Boolean, default: false },
   autofocus: { type: Boolean, default: false },
