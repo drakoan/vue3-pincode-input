@@ -2,13 +2,13 @@
   <div :class="`${CMP_NAME}-wrapper`">
     <input
       v-for="(_, index) in inputs" :key="index"
-      :id="`${CMP_NAME}-${index}`"
-      :ref="el => setInputRef({ index, el })"
       v-model.trim="inputs[index]"
+      :id="`${CMP_NAME}-${index}`"
+      :class="[CMP_NAME, inputClasses, spacingClass]"
+      :ref="el => setInputRef({ index, el })"
       :type="secure ? 'password' : 'tel'"
       :placeholder="placeholder"
       maxlength="1"
-      :class="[CMP_NAME, inputClasses, spacingClass]"
       @focus="focusedInputIndex = index"
       @keydown.delete="handleDelete(index, $event)"
       @keydown="handleKeyDown($event, index)"
@@ -44,8 +44,6 @@ const inputsRefs = ref({});
 
 const setInputRef = ({ el, index }) => inputsRefs.value[index] = el;
 
-const isValid = computed(() => inputs.value.join('').length === props.digits);
-
 const getInitialInputs = () => {
   const { modelValue, digits } = props;
   if (!modelValue) return Array(digits).fill('');
@@ -58,18 +56,16 @@ const getInitialInputs = () => {
     [...modelValue, ...(Array(difLength).fill(''))];
 };
 
+const setInputWatcher = index => watchers.value[index] = watch(
+  () => inputs.value[index],
+  newVal => handleInputChange(index, newVal));
+
 const init = () => {
   inputs.value = getInitialInputs();
   for (let i = 0; i < inputs.value.length; i++) setInputWatcher(i);
+  if (props.autofocus && inputsRefs.value[0]) inputsRefs.value[0].focus();
 };
-
-
-onMounted(() => {
-  nextTick(() => {
-    init();
-    if (props.autofocus && inputsRefs.value[0]) inputsRefs.value[0].focus();
-  });
-});
+onMounted(() => nextTick(() => init()));
 
 // TODO: refact with watch reactivity from this line:
 const focusPreviousInput = () => {
@@ -116,10 +112,6 @@ const handleKeyDown = e => {
   }
 };
 
-const setInputWatcher = index => watchers.value[index] = watch(
-  () => inputs.value[index],
-  newVal => handleInputChange(index, newVal));
-
 const isInputValid = str => str ? !!str.match('^\\d{1}$') : false;
 
 const emits = defineEmits(['update:modelValue']);
@@ -146,8 +138,9 @@ const handleDelete = (index, e) => {
   }
 };
 
-const inputClasses = computed(() => '' + props.inputClass +
-  (isValid.value ? ' ' + props.successClass : ''));
+const isValid = computed(() => inputs.value.join('').length === props.digits);
+const inputClasses = computed(() =>
+  props.inputClass + (isValid.value ? ` ${props.successClass}` : ''));
 </script>
 <style>
 .vue-pincode-input-wrapper {
