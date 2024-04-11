@@ -1,15 +1,13 @@
 <template>
-  <div class="vue-pincode-input-wrapper">
+  <div :class="`${CMP_NAME}-wrapper`">
     <input
-      v-for="(_, index) in inputs"
-      :key="index"
-      :ref="`${baseRefName}${index}`"
+      v-for="(_, index) in inputs" :key="index"
+      :ref="el => setInputRef({ index, el })"
       v-model.trim="inputs[index]"
       :type="secure ? 'password' : 'tel'"
       :placeholder="placeholder"
       maxlength="1"
-      class="vue-pincode-input"
-      :class="[inputClasses, spacingClass]"
+      :class="[CMP_NAME, inputClasses, spacingClass]"
       @focus="focusedInputIndex = index"
       @keydown.delete="handleDelete(index, $event)"
       @keydown="handleKeyDown($event, index)"
@@ -17,182 +15,148 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'PincodeInput',
-  props: {
-    modelValue: {
-      type: String,
-      default: '',
-    },
-    digits: {
-      type: Number,
-      default: 4,
-    },
-    placeholder: {
-      type: String,
-      default: '',
-    },
-    secure: {
-      type: Boolean,
-      default: false,
-    },
-    autofocus: {
-      type: Boolean,
-      default: false,
-    },
-    inputClass: {
-      type: String,
-      default: '',
-    },
-    successClass: {
-      type: String,
-      default: '',
-    },
-    spacingClass: {
-      type: String,
-      default: '',
-    },
-    preview: {
-      type: Number,
-      default: 0,
-    },
-  },
-  data() {
-    return {
-      baseRefName: 'vue-pincode-input',
-      focusedInputIndex: 0,
-      watchers: {},
-      inputs: this.initialInputs(),
-    };
-  },
-  computed: {
-    inputClasses() {
-      return [
-        this.inputClass || 'default',
-        this.isValid ? this.successClass : '',
-      ].filter(cssClass => !!cssClass).join(' ');
-    },
-    isValid() {
-      return this.inputs.join('').length === this.digits;
-    },
-  },
-  mounted() {
-    this.$nextTick(() => {
-      this.init();
-      const input0 = this.$refs['vue-pincode-input0'];
-      if (this.autofocus && input0) input0[0].focus();
-    });
-  },
-  beforeUnmount() {
-    this.unwatchInputs();
-  },
-  methods: {
-    init() {
-      this.inputs = this.initialInputs();
-      for (let i = 0; i < this.inputs.length; i++) this.setInputWatcher(i);
-    },
-    // TODO: refact with watch reactivity from this line:
-    focusPreviousInput() {
-      if (this.focusedInputIndex === 0) return;
-      this.focusInputByIndex(this.focusedInputIndex - 1);
-    },
-    focusNextInput() {
-      const nextIndex = this.focusedInputIndex + 1;
-      if (nextIndex === this.digits) return;
-      this.focusInputByIndex(nextIndex);
-    },
-    // note: this method will have to react of focused input index:
-    focusInputByIndex(index) {
-      const ref = `${this.baseRefName}${index}`;
-      const el = this.$refs[ref];
-      if (el) {
-        el[0].focus();
-        el[0].select();
-      }
-      this.focusedInputIndex = index;
-    },
-    // to upper line.
-    // end of code, which need to refact
-    // 
-    handleKeyDown(e) {
-      // TODO: add DELETE btn with focus next input
-      switch (e.keyCode) {
-      case 37: // left arrow key 
-        return this.focusPreviousInput();
-      case 39: // right arrow key
-        return this.focusNextInput();
-      default:
-        break;
-      }
-      const currVal = this.inputs[this.focusedInputIndex];
-      if (currVal) return this.inputs[this.focusedInputIndex] = '';
-      if (this.preview && this.secure) {
-        e.target.type = 'tel';
-        setTimeout(() => {
-          e.target.type = 'password';
-        }, this.preview);
-      }
-    },
-    setInputWatcher(index) {
-      const watchingProperty = `inputs.${index}`;
-      this.watchers[watchingProperty] = this.$watch(
-        watchingProperty,
-        newVal => this.handleInputChange(index, newVal)
-      );
-    },
-    isInputValid(str) {
-      return !str && str !== 0 ? false : !!str.match('^\\d{1}$');
-    },
-    handleInputChange(index, newVal) {
-      this.$emit('update:modelValue', this.inputs.join(''));
-      if (!this.isInputValid(newVal)) return this.inputs[index] = '';
-      // Check all input filled, but only on last input filled
-      // TODO: refact to
-      // 1.separate fn, auto focusing another input;
-      // 2. add feat of focusing first empty input on all cases
-      const isLastInputFocused = +index === this.digits - 1;
-      if (!isLastInputFocused) return this.focusNextInput();
-  
-      const firstEmptyInputIndex = this.inputs.findIndex(v => !v);
-      if (firstEmptyInputIndex !== -1) this.focusInputByIndex(firstEmptyInputIndex);
-    },
-    handleFocus(ref) {
-      this.$refs[ref][0].setSelectionRange(1, 1);
-    },
-    pinfocus(ref) {
-      this.$refs[ref][0].focus();
-    },
-    handleDelete(index, e) {
-      const isThisCellFilled = this.inputs[index].length;
-      if (!isThisCellFilled) {
-        this.focusPreviousInput();
-        e.preventDefault();
-      }
-    },
-    initialInputs() {
-      if (!this.modelValue) return Array(this.digits).fill('');
+<script setup>
+import { computed, ref, watch, onMounted, nextTick } from 'vue';
 
-      const difLength = this.digits - this.modelValue.length;
-      if (difLength === 0) return [...this.modelValue];
+const CMP_NAME='vue-pincode-input';
 
-      return difLength < 0 ?
-        [...this.modelValue.slice(0, this.digits)] :
-        [...this.modelValue, ...(Array(difLength).fill(''))];
-    },
-    reset() {
-      this.unwatchInputs();
-      this.init();
-    },
-    // NOTE: maybe no need in composition API after refact?
-    unwatchInputs() {
-      const watchers = Object.keys(this.watchers);
-      watchers.forEach(name => this.watchers[name]());
-    },
-  },
+const props = defineProps({
+  modelValue: { type: String, default: '' },
+  digits: { type: Number, default: 4 },
+  placeholder: { type: String, default: '' },
+  secure: { type: Boolean, default: false },
+  autofocus: { type: Boolean, default: false },
+  inputClass: { type: String, default: 'default' },
+  successClass: { type: String, default: '' },
+  spacingClass: { type: String, default: '' },
+  preview: { type: Number, default: 0 },
+});
+
+const focusedInputIndex = ref(0);
+const watchers = ref({});
+const inputs = ref([]);
+const inputsRefs = ref({});
+
+const setInputRef = ({ el, index }) => inputsRefs.value[index] = el;
+
+const isValid = computed(() => inputs.value.join('').length === props.digits);
+
+const getInitialInputs = () => {
+  const { modelValue, digits } = props;
+  if (!modelValue) return Array(digits).fill('');
+
+  const difLength = digits - modelValue.length;
+  if (difLength === 0) return [...modelValue];
+
+  return difLength < 0 ?
+    [...modelValue.slice(0, digits)] :
+    [...modelValue, ...(Array(difLength).fill(''))];
 };
-</script>
 
+const init = () => {
+  inputs.value = getInitialInputs();
+  for (let i = 0; i < inputs.value.length; i++) setInputWatcher(i);
+};
+
+
+onMounted(() => {
+  nextTick(() => {
+    init();
+    if (props.autofocus && inputsRefs.value[0]) inputsRefs.value[0].focus();
+  });
+});
+// const beforeUnmount = () => unwatchInputs();
+
+// TODO: refact with watch reactivity from this line:
+const focusPreviousInput = () => {
+  if (focusedInputIndex.value === 0) return;
+  focusInputByIndex(focusedInputIndex.value - 1);
+};
+
+const focusNextInput = () => {
+  const nextIndex = focusedInputIndex.value + 1;
+  if (nextIndex === props.digits) return;
+  focusInputByIndex(nextIndex);
+};
+
+// note: this method will have to react of focused input index:
+const focusInputByIndex = index => {
+  const el = inputsRefs.value[index];
+  if (el) {
+    el.focus();
+    el.select();
+  }
+  focusedInputIndex.value = index;
+};
+// to upper line.
+// end of code, which need to refact
+// 
+
+const handleKeyDown = e => {
+  // TODO: add DELETE btn with focus next input
+  switch (e.keyCode) {
+  case 37: // left arrow key 
+    return focusPreviousInput();
+  case 39: // right arrow key
+    return focusNextInput();
+  default:
+    break;
+  }
+  const currVal = inputs.value[focusedInputIndex.value];
+  if (currVal) return inputs.value[focusedInputIndex.value] = '';
+
+  const { preview, secure } = props;
+  if (preview && secure) {
+    e.target.type = 'tel';
+    setTimeout(() => e.target.type = 'password', preview);
+  }
+};
+
+const setInputWatcher = index => watchers.value[index] = watch(
+  () => inputs.value[index],
+  newVal => handleInputChange(index, newVal));
+
+const isInputValid = str => str ? !!str.match('^\\d{1}$') : false;
+
+const emits = defineEmits(['update:modelValue']);
+
+const handleInputChange = (index, newVal) => {
+  emits('update:modelValue', inputs.value.join(''));
+  if (!isInputValid(newVal)) return inputs.value[index] = '';
+  // Check all input filled, but only on last input filled
+  // TODO: refact to
+  // 1.separate fn, auto focusing another input;
+  // 2. add feat of focusing first empty input on all cases
+  const isLastInputFocused = +index === props.digits - 1;
+  if (!isLastInputFocused) return focusNextInput();
+  
+  const firstEmptyInputIndex = inputs.value.findIndex(v => !v);
+  if (firstEmptyInputIndex !== -1) focusInputByIndex(firstEmptyInputIndex);
+};
+
+const handleFocus = index => inputsRefs.value[index][0].setSelectionRange(1, 1);
+const pinfocus = index => inputsRefs.value[index][0].focus();
+
+const handleDelete = (index, e) => {
+  const isThisCellFilled = inputs.value[index].length;
+  if (!isThisCellFilled) {
+    e.preventDefault();
+    focusPreviousInput();
+  }
+};
+
+const reset = () => {
+  unwatchInputs();
+  init();
+};
+  
+// NOTE: maybe no need in composition API after refact?
+const unwatchInputs = () => Object.keys(watchers.value)
+  .forEach(name => watchers.value[name]());
+
+const inputClasses = computed(() => '' + props.inputClass +
+  (isValid.value ? ' ' + props.successClass : ''));
+</script>
 <style>
 .vue-pincode-input-wrapper {
   display: flex;
