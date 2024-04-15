@@ -152,10 +152,9 @@ const handleDelete = ({ e, id, next, previous }) => {
     if (previous) focusPreviousInput();
   }
 };
-
-const isValid = computed(() => inputs.value.join('').length === props.digits);
+const isComplete = computed(() => inputs.value.join('').length === props.digits);
 const inputClasses = computed(() =>
-  props.inputClass + (isValid.value ? ` ${props.successClass}` : ''));
+  props.inputClass + (isComplete.value ? ` ${props.successClass}` : ''));
 </script>
 <style>
 .vue-pincode-input-wrapper {
