@@ -104,27 +104,24 @@ const handleInputChange = (id, newVal) => {
 };
 
 const handleDelete = ({ e, id, next, previous }) => {
+  e.preventDefault();
   const isThisCellEmpty = !inputs.value[id];
   if (isThisCellEmpty) {
-    e.preventDefault();
     if (next) focusNextInput();
     if (previous) focusPreviousInput();
+  } else {
+    inputs.value[id] = '';
   }
 };
 
 const handleKeyDown = ({ id, e }) => {
   // TODO: add DELETE btn with focus next input
   switch (e.keyCode) {
-  case 46: // "Delete" key
-    return handleDelete({ id, e, next: true });
-  case 8: // Backspace key
-    return handleDelete({ id, e, previous: true });
-  case 37: // left arrow key 
-    return focusPreviousInput();
-  case 39: // right arrow key
-    return focusNextInput();
-  default:
-    break;
+  case 8: return handleDelete({ id, e, previous: true }); // Backspace key
+  case 46: return handleDelete({ id, e, next: true }); // "Delete" key
+  case 37: return focusPreviousInput(); // left arrow key 
+  case 39: return focusNextInput(); // right arrow key
+  default: break;
   }
   const currVal = inputs.value[choosenId.value];
   if (currVal) return inputs.value[choosenId.value] = '';
