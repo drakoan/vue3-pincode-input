@@ -13,8 +13,7 @@
       :placeholder="placeholder"
       maxlength="1"
       @focus="() => choosenId = id"
-      @keydown.delete="handleDelete(id, $event)"
-      @keydown="handleKeyDown($event, id)"
+      @keydown="e => handleKeyDown({ id, e })"
     />
   </div>
 </template>
@@ -99,9 +98,13 @@ const focusInputById = id => {
 // end of code, which need to refact
 // 
 
-const handleKeyDown = e => {
+const handleKeyDown = ({ id, e }) => {
   // TODO: add DELETE btn with focus next input
   switch (e.keyCode) {
+  case 46: // "Delete" key
+    return handleDelete({ id, e, next: true });
+  case 8: // Backspace key
+    return handleDelete({ id, e, previous: true });
   case 37: // left arrow key 
     return focusPreviousInput();
   case 39: // right arrow key
@@ -141,11 +144,12 @@ const handleInputChange = (id, newVal) => {
   if (firstEmptyInputId.value !== false) focusInputById(firstEmptyInputId.value);
 };
 
-const handleDelete = (id, e) => {
-  const isThisCellFilled = inputs.value[id].length;
-  if (!isThisCellFilled) {
+const handleDelete = ({ e, id, next, previous }) => {
+  const isThisCellEmpty = !inputs.value[id];
+  if (isThisCellEmpty) {
     e.preventDefault();
-    focusPreviousInput();
+    if (next) focusNextInput();
+    if (previous) focusPreviousInput();
   }
 };
 
