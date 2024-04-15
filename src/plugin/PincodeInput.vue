@@ -123,6 +123,11 @@ const isInputValid = str => str ? !!str.match('^\\d{1}$') : false;
 
 const emits = defineEmits(['update:modelValue']);
 
+const firstEmptyInputId = computed(() => {
+  const first = inputs.value.findIndex(v => !v);
+  return first === -1 ? false : first;
+});
+
 const handleInputChange = (id, newVal) => {
   emits('update:modelValue', inputs.value.join(''));
   if (!isInputValid(newVal)) return inputs.value[id] = '';
@@ -132,9 +137,8 @@ const handleInputChange = (id, newVal) => {
   // 2. add feat of focusing first empty input on all cases
   const isLastInputFocused = +id === props.digits - 1;
   if (!isLastInputFocused) return focusNextInput();
-  
-  const firstEmptyInputId = inputs.value.findIndex(v => !v);
-  if (firstEmptyInputId !== -1) focusInputById(firstEmptyInputId);
+
+  if (firstEmptyInputId.value !== false) focusInputById(firstEmptyInputId.value);
 };
 
 const handleDelete = (id, e) => {
