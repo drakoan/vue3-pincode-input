@@ -117,6 +117,12 @@ input.vue-pincode-input {
             <td>password input type</td>
         </tr>
          <tr>
+            <td>cmpName</td>
+            <td>String</td>
+            <td>pincode-input-[4 random digits]</td>
+            <td>component name for set DOM elements ids</td>
+        </tr>
+         <tr>
             <td>inputClass</td>
             <td>String</td>
             <td></td>
