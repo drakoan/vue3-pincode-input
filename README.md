@@ -99,6 +99,15 @@ input.vue-pincode-input {
       <td>length of pincode</td>
     </tr>
     <tr>
+      <td>autofocusOnFirstEmpty</td>
+      <td>String</td>
+      <td>'always'</td>
+      <td>auto-focuses on the first empty input field based on the following options:
+        <br><b>'never'</b> - never;
+        <br><b>'onLastFilled'</b> - when filled the rightmost field;
+        <br><b>'always'</b> - when all input fields to the right of the current one are filled</td>
+    </tr>
+    <tr>
       <td>autofocus</td>
       <td>Boolean</td>
       <td>true</td>
