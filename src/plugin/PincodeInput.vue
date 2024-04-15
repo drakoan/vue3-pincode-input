@@ -37,6 +37,11 @@ const props = defineProps({
   placeholder: { type: String, default: '' },
   secure: { type: Boolean, default: false },
   autofocus: { type: Boolean, default: false },
+  autofocusOnFirstEmpty: {
+    type: [String],
+    default: 'always',
+    validator: v => ['never', 'onLastFilled', 'always'].includes(v)
+  },
   inputClass: { type: String, default: 'default' },
   successClass: { type: String, default: '' },
   spacingClass: { type: String, default: '' },
@@ -96,10 +101,13 @@ const emits = defineEmits(['update:modelValue']);
 const handleInputChange = (id, newVal) => {
   emits('update:modelValue', inputs.value.join(''));
   if (!isInputValid(newVal)) return inputs.value[id] = '';
-  // TODO: add feat of focusing first empty input on all cases
-  const isLastInputFocused = +id === props.digits - 1;
-  if (!isLastInputFocused) return focusNextInput();
 
+  const isLastInputFocused = +id === props.digits - 1;
+  const rule = props.autofocusOnFirstEmpty;
+  if ((rule === 'always' && !isRightFilled.value) ||
+    (rule === 'onLastFilled' && !isLastInputFocused) ||
+    rule === 'never' ) return focusNextInput();
+  
   if (firstEmptyInputId.value !== false) focusInputById(firstEmptyInputId.value);
 };
 
