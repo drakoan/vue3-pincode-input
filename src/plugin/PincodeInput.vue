@@ -75,10 +75,10 @@ onMounted(() => nextTick(() => init()));
 
 const focusInputById = id => {
   const el = inputsRefs.value[id];
-  if (el) {
-    el.focus();
-    el.select();
-  }
+  if (!el) return;
+
+  el.focus();
+  el.select();
   choosenId.value = id;
 };
 
