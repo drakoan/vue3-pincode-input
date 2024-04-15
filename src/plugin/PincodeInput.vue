@@ -135,6 +135,16 @@ const firstEmptyInputId = computed(() => {
   return first === -1 ? false : first;
 });
 
+const checkRightIsFilled = id => {
+  const { length } = inputs.value;
+  const atRigthFull = inputs.value
+    .slice(id + 1, length)
+    .filter( i => !!i);
+  return atRigthFull.length + 1 === length - id;
+};
+
+const isRightFilled = computed(() => checkRightIsFilled(choosenId.value));
+
 const isComplete = computed(() => inputs.value.join('').length === props.digits);
 const inputClasses = computed(() =>
   props.inputClass + (isComplete.value ? ` ${props.successClass}` : ''));
