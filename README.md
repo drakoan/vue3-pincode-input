@@ -83,64 +83,64 @@ input.vue-pincode-input {
 ## Props
 
 <table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th style="width: 100px;">Name</th>
-            <th style="width: 50px;">Type</th>
-            <th style="width: 50px;">Default</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>digits</td>
-            <td>Number</td>
-            <td>4</td>
-            <td>length of pincode</td>
-        </tr>
-        <tr>
-            <td>autofocus</td>
-            <td>Boolean</td>
-            <td>true</td>
-            <td>auto focus first input</td>
-        </tr>
-       <tr>
-            <td>placeholder</td>
-            <td>String</td>
-            <td></td>
-            <td>placeholder pincode input</td>
-        </tr>
-         <tr>
-            <td>secure</td>
-            <td>Boolean</td>
-            <td>false</td>
-            <td>password input type</td>
-        </tr>
-         <tr>
-            <td>cmpName</td>
-            <td>String</td>
-            <td>pincode-input-[4 random digits]</td>
-            <td>component name for set DOM elements ids</td>
-        </tr>
-         <tr>
-            <td>inputClass</td>
-            <td>String</td>
-            <td></td>
-            <td>class for pincode input</td>
-        </tr>
-        <tr>
-            <td>successClass</td>
-            <td>String</td>
-            <td></td>
-             <td>class for pincode input success</td>
-        </tr>
-         <tr>
-            <td>spacingClass</td>
-            <td>String</td>
-            <td></td>
-             <td>class for spacing  between input</td>
-        </tr>
-    </tbody>
+  <thead>
+    <tr>
+      <th style="width: 50px;">Name</th>
+      <th style="width: 50px;">Type</th>
+      <th style="width: 50px;">Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>digits</td>
+      <td>Number</td>
+      <td>4</td>
+      <td>length of pincode</td>
+    </tr>
+    <tr>
+      <td>autofocus</td>
+      <td>Boolean</td>
+      <td>true</td>
+      <td>auto focus first input</td>
+    </tr>
+    <tr>
+      <td>placeholder</td>
+      <td>String</td>
+      <td></td>
+      <td>placeholder pincode input</td>
+    </tr>
+    <tr>
+      <td>secure</td>
+      <td>Boolean</td>
+      <td>false</td>
+      <td>password input type</td>
+    </tr>
+    <tr>
+      <td>cmpName</td>
+      <td>String</td>
+      <td>pincode-input-[4 random digits]</td>
+      <td>component name for set DOM elements ids</td>
+    </tr>
+    <tr>
+      <td>inputClass</td>
+      <td>String</td>
+      <td></td>
+      <td>class for pincode input</td>
+    </tr>
+    <tr>
+      <td>successClass</td>
+      <td>String</td>
+      <td></td>
+      <td>class for pincode input success</td>
+    </tr>
+    <tr>
+      <td>spacingClass</td>
+      <td>String</td>
+      <td></td>
+      <td>class for spacing  between input</td>
+    </tr>
+  </tbody>
 </table>
 
 ## Authors && Contributors
