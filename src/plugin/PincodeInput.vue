@@ -73,19 +73,6 @@ const init = () => {
 };
 onMounted(() => nextTick(() => init()));
 
-// TODO: refact with watch reactivity from this line:
-const focusPreviousInput = () => {
-  if (choosenId.value === 0) return;
-  focusInputById(choosenId.value - 1);
-};
-
-const focusNextInput = () => {
-  const nextId = choosenId.value + 1;
-  if (nextId === props.digits) return;
-  focusInputById(nextId);
-};
-
-// note: this method will have to react of focused input id:
 const focusInputById = id => {
   const el = inputsRefs.value[id];
   if (el) {
@@ -94,9 +81,36 @@ const focusInputById = id => {
   }
   choosenId.value = id;
 };
-// to upper line.
-// end of code, which need to refact
-// 
+
+const focusPreviousInput = () => {
+  if (choosenId.value !== 0) focusInputById(choosenId.value - 1);
+};
+
+const focusNextInput = () => {
+  const nextId = choosenId.value + 1;
+  if (nextId !== props.digits) focusInputById(nextId);
+};
+
+const emits = defineEmits(['update:modelValue']);
+
+const handleInputChange = (id, newVal) => {
+  emits('update:modelValue', inputs.value.join(''));
+  if (!isInputValid(newVal)) return inputs.value[id] = '';
+  // TODO: add feat of focusing first empty input on all cases
+  const isLastInputFocused = +id === props.digits - 1;
+  if (!isLastInputFocused) return focusNextInput();
+
+  if (firstEmptyInputId.value !== false) focusInputById(firstEmptyInputId.value);
+};
+
+const handleDelete = ({ e, id, next, previous }) => {
+  const isThisCellEmpty = !inputs.value[id];
+  if (isThisCellEmpty) {
+    e.preventDefault();
+    if (next) focusNextInput();
+    if (previous) focusPreviousInput();
+  }
+};
 
 const handleKeyDown = ({ id, e }) => {
   // TODO: add DELETE btn with focus next input
@@ -124,34 +138,11 @@ const handleKeyDown = ({ id, e }) => {
 
 const isInputValid = str => str ? !!str.match('^\\d{1}$') : false;
 
-const emits = defineEmits(['update:modelValue']);
-
 const firstEmptyInputId = computed(() => {
   const first = inputs.value.findIndex(v => !v);
   return first === -1 ? false : first;
 });
 
-const handleInputChange = (id, newVal) => {
-  emits('update:modelValue', inputs.value.join(''));
-  if (!isInputValid(newVal)) return inputs.value[id] = '';
-  // Check all input filled, but only on last input filled
-  // TODO: refact to
-  // 1.separate fn, auto focusing another input;
-  // 2. add feat of focusing first empty input on all cases
-  const isLastInputFocused = +id === props.digits - 1;
-  if (!isLastInputFocused) return focusNextInput();
-
-  if (firstEmptyInputId.value !== false) focusInputById(firstEmptyInputId.value);
-};
-
-const handleDelete = ({ e, id, next, previous }) => {
-  const isThisCellEmpty = !inputs.value[id];
-  if (isThisCellEmpty) {
-    e.preventDefault();
-    if (next) focusNextInput();
-    if (previous) focusPreviousInput();
-  }
-};
 const isComplete = computed(() => inputs.value.join('').length === props.digits);
 const inputClasses = computed(() =>
   props.inputClass + (isComplete.value ? ` ${props.successClass}` : ''));
