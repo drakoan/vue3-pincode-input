@@ -146,6 +146,7 @@ input.vue-pincode-input {
 ## Authors && Contributors
 
 - [siriphonnot](https://github.com/siriphonnott)
+- [drakoan](https://github.com/drakoan)
 
 ## License
 
