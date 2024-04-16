@@ -103,6 +103,8 @@ const handleInputChange = (id, newVal) => {
   if (!isInputValid(newVal)) return inputs.value[id] = '';
 
   const isLastInputFocused = +id === props.digits - 1;
+  if (isComplete.value) return isLastInputFocused ? focusInputById(0) : focusNextInput();
+
   const rule = props.autofocusOnFirstEmpty;
   if ((rule === 'always' && !isRightFilled.value) ||
     (rule === 'onLastFilled' && !isLastInputFocused) ||
