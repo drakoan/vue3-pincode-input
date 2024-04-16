@@ -19,9 +19,16 @@
 </template>
 
 <script setup>
-import { computed, ref, watch, onMounted, nextTick } from 'vue';
+import { computed, ref, watch, onMounted, nextTick, watchEffect } from 'vue';
 
 const CMP_NAME='vue-pincode-input';
+
+const emits = defineEmits([
+  'pincode-input-update',
+  'pincode-input-complete',
+  // Note: no need to add to readme! Default component compatibility with v-model:
+  'update:modelValue'
+]);
 
 const props = defineProps({
   cmpName: {
@@ -87,12 +94,6 @@ const focusNextInput = () => {
 
 const pincode = computed(() => inputs.value.join(''));
 
-const emits = defineEmits([
-  'pincode-input-update',
-  // Note: no need to add to readme! Default component compatibility with v-model:
-  'update:modelValue'
-]);
-
 const handleInputChange = (id, newVal) => {
   emits('update:modelValue', pincode.value); // Default cmp compatibility with v-model
   emits('pincode-input-update', ({ id, value: newVal, pincode: pincode.value }));
@@ -152,6 +153,10 @@ const checkRightIsFilled = id => {
 const isRightFilled = computed(() => checkRightIsFilled(choosenId.value));
 
 const isComplete = computed(() => pincode.value.length === props.digits);
+watchEffect(() => {
+  if (isComplete.value) emits(('pincode-input-complete'), pincode.value);
+});
+
 const inputClasses = computed(() =>
   props.inputClass + (isComplete.value ? ` ${props.successClass}` : ''));
 </script>

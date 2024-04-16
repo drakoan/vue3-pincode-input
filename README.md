@@ -172,6 +172,11 @@ input.vue-pincode-input {
       </td>
       <td>current input & result of entering pin code on this moment</td>
     </tr>
+    <tr>
+      <td>@pincodeInputComplete</td>
+      <td>String (with length === props.digits numbers)</td>
+      <td>result of entering pin code</td>
+    </tr>
   </tbody>
 </table>
 
