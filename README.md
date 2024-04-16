@@ -152,6 +152,29 @@ input.vue-pincode-input {
   </tbody>
 </table>
 
+## Events
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th style="width: 50px;">Name</th>
+      <th style="width: 50px;">Data & types</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>@pincodeInputUpdate</td>
+      <td>Object ({}) with fields:
+        <br><b>'id'</b> Number (integer);
+        <br><b>'value'</b> String ('integer' with length === 1 OR empty string '');
+        <br><b>'pincode'</b> String (with length from 1 to props.digits numbers OR empty string '');
+      </td>
+      <td>current input & result of entering pin code on this moment</td>
+    </tr>
+  </tbody>
+</table>
+
 ## Authors && Contributors
 
 - [siriphonnot](https://github.com/siriphonnott)
