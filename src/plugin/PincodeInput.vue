@@ -68,12 +68,11 @@ const setInputWatcher = id => watchers[id] = watch(
   () => inputs.value[id],
   newVal => handleInputChange(id, newVal));
 
-const init = () => {
+onMounted(() => nextTick(() => {
   inputs.value = Array(props.digits).fill('');
-  for (let i = 0; i < props.digits; i++) setInputWatcher(i);
+  inputs.value.forEach((_input, id) => setInputWatcher(id));
   if (props.autofocus && inputsRefs.value[0]) inputsRefs.value[0].focus();
-};
-onMounted(() => nextTick(() => init()));
+}));
 
 const focusInputById = id => {
   const el = inputsRefs.value[id];
