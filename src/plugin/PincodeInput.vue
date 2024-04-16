@@ -62,7 +62,7 @@ const setInputWatcher = id => watchers.value[id] = watch(
 
 const init = () => {
   inputs.value = Array(props.digits).fill('');
-  for (let i = 0; i < inputs.value.length; i++) setInputWatcher(i);
+  for (let i = 0; i < props.digits; i++) setInputWatcher(i);
   if (props.autofocus && inputsRefs.value[0]) inputsRefs.value[0].focus();
 };
 onMounted(() => nextTick(() => init()));
@@ -85,10 +85,12 @@ const focusNextInput = () => {
   if (nextId !== props.digits) focusInputById(nextId);
 };
 
+const pincode = computed(() => inputs.value.join(''));
+
 const emits = defineEmits(['update:modelValue']);
 
 const handleInputChange = (id, newVal) => {
-  emits('update:modelValue', inputs.value.join(''));
+  emits('update:modelValue', pincode.value);
   if (!isInputValid(newVal)) return inputs.value[id] = '';
 
   const isLastInputFocused = +id === props.digits - 1;
@@ -144,7 +146,7 @@ const checkRightIsFilled = id => {
 
 const isRightFilled = computed(() => checkRightIsFilled(choosenId.value));
 
-const isComplete = computed(() => inputs.value.join('').length === props.digits);
+const isComplete = computed(() => pincode.value.length === props.digits);
 const inputClasses = computed(() =>
   props.inputClass + (isComplete.value ? ` ${props.successClass}` : ''));
 </script>
