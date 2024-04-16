@@ -66,6 +66,8 @@ const pincode = reactive({
   <footer>
     Make with ❤️ by &nbsp;
     <a href="https://www.npmjs.com/~siriphonnot" target="_blank">NottDev</a>
+    &nbsp;&&nbsp;
+    <a href="https://www.npmjs.com/~drakoan" target="_blank">DraKoan</a>
   </footer>
 </template>
 
