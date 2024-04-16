@@ -58,13 +58,13 @@ const props = defineProps({
 });
 
 const choosenId = ref(0);
-const watchers = ref({});
+const watchers = [];
 const inputs = ref([]);
 const inputsRefs = ref({});
 
 const setInputRef = ({ el, id }) => inputsRefs.value[id] = el;
 
-const setInputWatcher = id => watchers.value[id] = watch(
+const setInputWatcher = id => watchers[id] = watch(
   () => inputs.value[id],
   newVal => handleInputChange(id, newVal));
 
