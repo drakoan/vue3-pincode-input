@@ -129,6 +129,10 @@ const handleKeyDown = ({ id, e }) => {
   case 46: return handleDelete({ id, e, next: true }); // "Delete" key
   case 37: return focusPreviousInput(); // left arrow key 
   case 39: return focusNextInput(); // right arrow key
+  case 32: // space key
+    e.preventDefault();
+    inputs.value[id] = '';
+    return;
   default: break;
   }
   const currVal = inputs.value[choosenId.value];
