@@ -28,7 +28,6 @@ const props = defineProps({
     type: String,
     default: () => `pincode-input-${Math.ceil(Math.random()*9999)}`
   },
-  modelValue: { type: String, default: '' },
   digits: {
     type: Number,
     default: 4,
@@ -46,6 +45,8 @@ const props = defineProps({
   successClass: { type: String, default: '' },
   spacingClass: { type: String, default: '' },
   preview: { type: Number, default: 0 },
+  // Note: no need to add to readme! Default component compatibility with v-model:
+  modelValue: { type: String, default: ''},
 });
 
 const choosenId = ref(0);
@@ -55,24 +56,12 @@ const inputsRefs = ref({});
 
 const setInputRef = ({ el, id }) => inputsRefs.value[id] = el;
 
-const getInitialInputs = () => {
-  const { modelValue, digits } = props;
-  if (!modelValue) return Array(digits).fill('');
-
-  const difLength = digits - modelValue.length;
-  if (difLength === 0) return [...modelValue];
-
-  return difLength < 0 ?
-    [...modelValue.slice(0, digits)] :
-    [...modelValue, ...(Array(difLength).fill(''))];
-};
-
 const setInputWatcher = id => watchers.value[id] = watch(
   () => inputs.value[id],
   newVal => handleInputChange(id, newVal));
 
 const init = () => {
-  inputs.value = getInitialInputs();
+  inputs.value = Array(props.digits).fill('');
   for (let i = 0; i < inputs.value.length; i++) setInputWatcher(i);
   if (props.autofocus && inputsRefs.value[0]) inputsRefs.value[0].focus();
 };
