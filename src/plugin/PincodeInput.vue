@@ -87,10 +87,15 @@ const focusNextInput = () => {
 
 const pincode = computed(() => inputs.value.join(''));
 
-const emits = defineEmits(['update:modelValue']);
+const emits = defineEmits([
+  'pincode-input-update',
+  // Note: no need to add to readme! Default component compatibility with v-model:
+  'update:modelValue'
+]);
 
 const handleInputChange = (id, newVal) => {
-  emits('update:modelValue', pincode.value);
+  emits('update:modelValue', pincode.value); // Default cmp compatibility with v-model
+  emits('pincode-input-update', ({ id, value: newVal, pincode: pincode.value }));
   if (!isInputValid(newVal)) return inputs.value[id] = '';
 
   const isLastInputFocused = +id === props.digits - 1;
