@@ -14,7 +14,12 @@ const pincode = reactive({
     <div class="default shadow">
       <h2>Default</h2>
       <hr />
-      <VuePincodeInput v-model="pincode.default" :digits="4" autofocus />
+      <VuePincodeInput
+        v-model="pincode.default"
+        :digits="+4"
+        autofocus
+        autofocusOnFirstEmpty="always"
+      />
       <div class="preview">pincode: {{ pincode.default }}</div>
       <div class="code-preview">
         {{ `<VuePincodeInput v-model="pincode" />` }}
@@ -29,6 +34,7 @@ const pincode = reactive({
           text-gray-500 border-2 border-gray-200 shadow"
         success-class="border-2 border-green-400"
         spacing-class="mr-2"
+        :digits="+6"
       />
       <div class="preview">pincode: {{ pincode.custom }}</div>
       <div class="code-preview">
@@ -46,7 +52,7 @@ const pincode = reactive({
         <hr />
         <VuePincodeInput
           v-model="pincode.default"
-          :digits="4"
+          :digits="+4"
           :preview="200"
           secure
         />
