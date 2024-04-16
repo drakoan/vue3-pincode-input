@@ -23,13 +23,15 @@ import { computed, ref, watch, onMounted, nextTick, watchEffect } from 'vue';
 
 const CMP_NAME='vue-pincode-input';
 
-const emits = defineEmits([
-  'pincode-input-update',
-  'pincode-input-invalid-input',
-  'pincode-input-complete',
+const emits = defineEmits({
+  'pincode-input-update': ({ pincode, id, value }) => typeof(pincode) === 'string' &&
+    typeof(id) === 'number' && typeof(value) === 'string',
+  'pincode-input-invalid-input': ({ id, value }) =>
+    typeof(id) === 'number' && typeof(value) === 'string',
+  'pincode-input-complete': pincode => typeof(pincode) === 'string',
   // Note: no need to add to readme! Default component compatibility with v-model:
-  'update:modelValue'
-]);
+  'update:modelValue': pincode => typeof(pincode) === 'string'
+});
 
 const props = defineProps({
   cmpName: {
