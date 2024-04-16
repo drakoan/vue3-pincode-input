@@ -25,6 +25,7 @@ const CMP_NAME='vue-pincode-input';
 
 const emits = defineEmits([
   'pincode-input-update',
+  'pincode-input-invalid-input',
   'pincode-input-complete',
   // Note: no need to add to readme! Default component compatibility with v-model:
   'update:modelValue'
@@ -95,9 +96,13 @@ const focusNextInput = () => {
 const pincode = computed(() => inputs.value.join(''));
 
 const handleInputChange = (id, newVal) => {
-  emits('update:modelValue', pincode.value); // Default cmp compatibility with v-model
+  if (!isInputValid(newVal)) {
+    inputs.value[id] = '';
+    emits('pincode-input-invalid-input', ({ id, value: newVal }));
+    return;
+  }
   emits('pincode-input-update', ({ id, value: newVal, pincode: pincode.value }));
-  if (!isInputValid(newVal)) return inputs.value[id] = '';
+  emits('update:modelValue', pincode.value); // Default cmp compatibility with v-model
 
   const isLastInputFocused = +id === props.digits - 1;
   if (isComplete.value) return isLastInputFocused ? focusInputById(0) : focusNextInput();
