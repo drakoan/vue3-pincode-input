@@ -147,15 +147,9 @@ const firstEmptyInputId = computed(() => {
   return first === -1 ? false : first;
 });
 
-const checkRightIsFilled = id => {
-  const { length } = inputs.value;
-  const atRigthFull = inputs.value
-    .slice(id + 1, length)
-    .filter( i => !!i);
-  return atRigthFull.length + 1 === length - id;
-};
-
-const isRightFilled = computed(() => checkRightIsFilled(choosenId.value));
+const isRightFilled = computed(() => inputs.value
+  .slice(choosenId.value + 1, props.digits)
+  .findIndex(v => v === '') === -1);
 
 const isComplete = computed(() => pincode.value.length === props.digits);
 watchEffect(() => {
