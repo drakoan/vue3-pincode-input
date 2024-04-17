@@ -44,6 +44,7 @@ Demo on [GitHub Pages](https://drakoan.github.io/vue3-pincode-otp/)
 - Auto moving focus when deleting (backspace - back, delete - forward)
 - Moving focus by pressing the keyboard arrows
 - Customizable autofocus to empty fields
+- Customizable autofocus to first fields after completing pin (you can make the typing-game! :) )
 
 **Informational**:
 - transmission of all user input data (character and input location, full and incomplete pin)
@@ -117,6 +118,12 @@ input.vue-pincode-input {
       <td>length of pincode</td>
     </tr>
     <tr>
+      <td>autofocus</td>
+      <td>Boolean</td>
+      <td>true</td>
+      <td>auto focus first input</td>
+    </tr>
+    <tr>
       <td>autofocusOnFirstEmpty</td>
       <td>String</td>
       <td>'always'</td>
@@ -126,11 +133,11 @@ input.vue-pincode-input {
         <br><b>'always'</b> - when all input fields to the right of the current one are filled</td>
     </tr>
     <tr>
-      <td>autofocus</td>
+      <td>autofocusCircle</td>
       <td>Boolean</td>
-      <td>true</td>
-      <td>auto focus first input</td>
-    </tr>
+      <td>false</td>
+      <td>auto focus first input after complete pincode</td>
+    </tr>    
     <tr>
       <td>placeholder</td>
       <td>String</td>
