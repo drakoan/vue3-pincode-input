@@ -1,65 +1,110 @@
 <script setup>
 import VuePincodeInput from './plugin/PincodeInput.vue';
-import { reactive } from 'vue';
+import { ref } from 'vue';
 
-const pincode = reactive({
-  default: '',
-  custom: '',
-});
+const pincode = ref('');
+const isPinComplete = ref(false);
+
+const custom = ref('');
+const errorCounter = ref(0);
+
+const secure = ref('');
+const strict = ref('');
+const fieldId = ref('');
+const inputValue = ref('');
 </script>
 
 <template>
   <main class="main-wrapper">
     <h1>Vue3 Pincode Input</h1>
     <div class="default shadow">
-      <h2>Default</h2>
+      <h2>Default (4 digits), autofocus & complete events</h2>
       <hr />
       <VuePincodeInput
-        v-model="pincode.default"
-        :digits="+4"
+        v-model="pincode"
         autofocus
-        autofocusOnFirstEmpty="always"
+        @pincodeInputComplete="isPinComplete = true"
+        @pincodeInputIncomplete="isPinComplete = false"
       />
-      <div class="preview">pincode: {{ pincode.default }}</div>
+      <div class="preview">pincode: {{ pincode }}</div>
+      <div class="preview">is pin complete: {{ isPinComplete }}</div>
       <div class="code-preview">
-        {{ `<VuePincodeInput v-model="pincode" />` }}
+        {{ `<VuePincodeInput
+  v-model="pincode"
+  @pincodeInputComplete="isPinComplete = true"
+  @pincodeInputIncomplete="isPinComplete = false"
+/>` }}
       </div>
     </div>
     <div class="custom shadow">
-      <h2>Custom</h2>
+      <h2>Custom style, 6 digits, no autofocus & never autofocus on first empty field</h2>
       <hr />
       <VuePincodeInput
-        v-model="pincode.custom"
+        v-model="custom"
+        :digits="+6"
+        autofocusOnFirstEmpty="never"
         input-class="rounded-full w-18 h-18 text-3xl
           text-gray-500 border-2 border-gray-200 shadow"
         success-class="border-2 border-green-400"
         spacing-class="mr-2"
-        :digits="+6"
       />
-      <div class="preview">pincode: {{ pincode.custom }}</div>
+      <div class="preview">pincode: {{ custom }}</div>
+      <div><i>Note: you can see never autofocus on first empty field
+        if you start typing from second field</i></div>
       <div class="code-preview">
         {{ `<VuePincodeInput
-          v-model="pincode"
-          input-class="rounded-full w-18 h-18 text-3xl
-            text-gray-500 border-2 border-gray-200 shadow"
-          success-class="border-2 border-green-400"
-          spacing-class="mr-2"
-          autofocus
-        />` }}
+  :digits="+6"
+  autofocusOnFirstEmpty="never"
+  input-class="rounded-full w-18 h-18 text-3xl
+    text-gray-500 border-2 border-gray-200 shadow"
+  success-class="border-2 border-green-400"
+  spacing-class="mr-2"
+/>` }}
       </div>
-      <div class="default shadow">
-        <h2>Preview secure</h2>
-        <hr />
-        <VuePincodeInput
-          v-model="pincode.default"
-          :digits="+4"
-          :preview="200"
-          secure
-        />
-        <div class="preview">pincode: {{ pincode.default }}</div>
-        <div class="code-preview">
-          {{ `<VuePincodeInput v-model="pincode" :preview="200" secure />` }}
-        </div>
+    </div>
+    <div class="default shadow">
+      <h2>Preview secure, errors counter & strict control of inputs</h2>
+      <hr />
+      <VuePincodeInput
+        v-model="secure"
+        :digits="+4"
+        :preview="200"
+        secure
+        @pincodeInputInvalidInput="({ id, value }) => {
+          fieldId = id;
+          inputValue = value;
+          errorCounter++;
+        }"
+        @pincodeInputUpdate="({ id, value, pincode }) => {
+          strict = pincode;
+          fieldId = id;
+          inputValue = value;
+        }"
+        @pincodeInputIncomplete="pincode => strict = pincode"
+      />
+      <div class="preview">pincode (v-model): {{ secure }}</div>
+      <div class="preview">pincode from event: {{ strict }}</div>
+      <div class="preview">current input field id: {{ fieldId }}</div>
+      <div class="preview">current input value: "{{ inputValue }}"</div>
+      <div class="preview">errors: {{ errorCounter }} </div>
+      <div class="code-preview">
+        {{ `<VuePincodeInput
+  v-model="secure"
+  :digits="+4"
+  :preview="200"
+  secure
+  @pincodeInputInvalidInput="({ id, value }) => {
+    fieldId = id;
+    inputValue = value;
+    errorCounter++;
+  }"
+  @pincodeInputUpdate="({ id, value, pincode }) => {
+    strict = pincode;
+    fieldId = id;
+    inputValue = value;
+  }"
+  @pincodeInputIncomplete="pincode => strict = pincode"
+/>` }}
       </div>
     </div>
   </main>
