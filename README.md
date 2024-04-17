@@ -1,8 +1,8 @@
 # vue3-pincode-input
 
-> Pincode input component for Vue 3 [Live demo](https://siriphonnott.github.io/vue-pincode-input/)
+> Pincode input component for Vue 3 [Live demo](https://drakoan.github.io/vue3-pincode-input/)
 
-![vue3-pincode-input](https://siriphonnott.github.io/vue-pincode-input/banner.png)
+![vue3-pincode-input](https://drakoan.github.io/vue3-pincode-input/banner.png)
 
 
 ## Table of Contents
@@ -16,7 +16,7 @@
 
 ## Demo
 
-Demo on [GitHub Pages](https://siriphonnott.github.io/vue-pincode-input/)
+Demo on [GitHub Pages](https://drakoan.github.io/vue3-pincode-input/)
 
 ## Features
 
