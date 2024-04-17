@@ -29,6 +29,7 @@ const emits = defineEmits({
   'pincode-input-invalid-input': ({ id, value }) =>
     typeof(id) === 'number' && typeof(value) === 'string',
   'pincode-input-complete': pincode => typeof(pincode) === 'string',
+  'pincode-input-incomplete': pincode => typeof(pincode) === 'string',
   // Note: no need to add to readme! Default component compatibility with v-model:
   'update:modelValue': pincode => typeof(pincode) === 'string'
 });
@@ -157,9 +158,10 @@ const isRightFilled = computed(() => inputs.value
   .findIndex(v => v === '') === -1);
 
 const isComplete = computed(() => pincode.value.length === props.digits);
-watchEffect(() => {
-  if (isComplete.value) emits(('pincode-input-complete'), pincode.value);
-});
+
+watchEffect(() => isComplete.value ?
+  emits(('pincode-input-complete'), pincode.value) :
+  emits(('pincode-input-incomplete'), pincode.value));
 
 const inputClasses = computed(() =>
   props.inputClass + (isComplete.value ? ` ${props.successClass}` : ''));

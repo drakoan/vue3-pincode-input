@@ -185,8 +185,18 @@ input.vue-pincode-input {
       <td>String (with length === props.digits numbers)</td>
       <td>result of entering pin code</td>
     </tr>
+    <tr>
+      <td>@pincodeInputIncomplete</td>
+      <td>Boolean</td>
+      <td>true</td>
+    </tr>
   </tbody>
 </table>
+
+**Note**:
+The v-model is updated when the pin is still being filled in and when it is already completed and edited.
+But the v-model stops updating when the pincode is completed and one of the fields is cleared,
+so you can use @pincodeInputUpdate and @pincodeInputIncomplete events to watch for changes.
 
 ## Authors && Contributors
 
