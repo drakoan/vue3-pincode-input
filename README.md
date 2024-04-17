@@ -45,7 +45,7 @@ Demo on [GitHub Pages](https://drakoan.github.io/vue3-pincode-input/)
 - Moving focus by pressing the keyboard arrows
 - Customizable autofocus to empty fields
 
-**informational**:
+**Informational**:
 - transmission of all user input data (character and input location, full and incomplete pin)
 - Input error event (not a number)
 - event of completion and incompleteness
