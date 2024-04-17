@@ -187,8 +187,8 @@ input.vue-pincode-input {
     </tr>
     <tr>
       <td>@pincodeInputIncomplete</td>
-      <td>Boolean</td>
-      <td>true</td>
+      <td>String (with length from 0 to (props.digits - 1)  numbers)</td>
+      <td>when a completed pincode becomes incomplete, return current incomplete pin</td>
     </tr>
   </tbody>
 </table>
