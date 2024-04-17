@@ -20,17 +20,35 @@ Demo on [GitHub Pages](https://drakoan.github.io/vue3-pincode-input/)
 
 ## Features
 
-- Be lightweight, powerful and easy to use
+**Valuable**:
+- Be lightweight, powerful, informative, and easy to use at developing
+- Be usability for users
+- Support Vue 3 only
+- Call for native numeric keyboard on mobile
+
+**Styling**:
 - Support for add your custom class
 - Override-friendly styles
-- Configurable length (pincode length)
-- Auto moving focus when filling
-- Auto moving focus when deleting
-- Call for native numeric keyboard on mobile
-- Optional secure mode (password input type)
 - Can add class for pincode input
 - Can add success class of pincode input
-- Support Vue 3 only
+
+**Configurable**:
+- Configurable length (pincode length)
+- Optional secure mode (password input type)
+- Сan assign id to DOM elements (useful for tests)
+- Сan use several pin codes with unique ids on one page
+
+**Autofocus**:
+- Autofocus on mounted (configurable)
+- Auto moving focus when filling
+- Auto moving focus when deleting (backspace - back, delete - forward)
+- Moving focus by pressing the keyboard arrows
+- Customizable autofocus to empty fields
+
+**informational**:
+- transmission of all user input data (character and input location, full and incomplete pin)
+- Input error event (not a number)
+- event of completion and incompleteness
 
 ## Usage
 
