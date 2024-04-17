@@ -100,7 +100,7 @@ const pincode = computed(() => inputs.value.join(''));
 const handleInputChange = (id, newVal) => {
   if (!isInputValid(newVal)) {
     inputs.value[id] = '';
-    emits('pincode-input-invalid-input', ({ id, value: newVal }));
+    if (newVal) emits('pincode-input-invalid-input', ({ id, value: newVal }));
     return;
   }
   emits('pincode-input-update', ({ id, value: newVal, pincode: pincode.value }));
@@ -132,6 +132,7 @@ const handleKeyDown = ({ id, e }) => {
   case 39: return focusNextInput(); // right arrow key
   case 32: // space key
     e.preventDefault();
+    emits('pincode-input-invalid-input', ({ id, value: ' ' }));
     inputs.value[id] = '';
     return;
   default: break;
