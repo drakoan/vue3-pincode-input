@@ -40,6 +40,7 @@ Demo on [GitHub Pages](https://drakoan.github.io/vue3-pincode-otp/)
 
 **Autofocus**:
 - Autofocus on mounted (configurable)
+- Autoblur on complete (configurable)
 - Auto moving focus when filling
 - Auto moving focus when deleting (backspace - back, delete - forward)
 - Moving focus by pressing the keyboard arrows
@@ -124,6 +125,15 @@ input.vue-pincode-input {
       <td>auto focus first input</td>
     </tr>
     <tr>
+      <td>autoBlur</td>
+      <td>String</td>
+      <td>'onLastFilled'</td>
+      <td>auto blur on complete entering pincode:
+        <br><b>'never'</b> - never;
+        <br><b>'onLastFilled'</b> - when filled the rightmost field;
+        <br><b>'always'</b> - when filled all fields in any order</td>
+    </tr>
+    <tr>
       <td>autofocusOnFirstEmpty</td>
       <td>String</td>
       <td>'always'</td>
@@ -136,7 +146,7 @@ input.vue-pincode-input {
       <td>autofocusCircle</td>
       <td>Boolean</td>
       <td>false</td>
-      <td>auto focus first input after complete pincode</td>
+      <td>auto focus first input after complete pincode. Note: props.autoblur overrides this rule.</td>
     </tr>    
     <tr>
       <td>placeholder</td>

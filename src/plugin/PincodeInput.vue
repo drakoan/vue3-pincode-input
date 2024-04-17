@@ -53,6 +53,11 @@ const props = defineProps({
     validator: v => ['never', 'onLastFilled', 'always'].includes(v)
   },
   autofocusCircle: { type: Boolean, default: false },
+  autoBlur: {
+    type: [String],
+    default: 'onLastFilled',
+    validator: v => ['never', 'onLastFilled', 'always'].includes(v)
+  },
   inputClass: { type: String, default: 'default' },
   successClass: { type: String, default: '' },
   spacingClass: { type: String, default: '' },
@@ -107,16 +112,22 @@ const handleInputChange = (id, newVal) => {
   emits('pincode-input-update', ({ id, value: newVal, pincode: pincode.value }));
   emits('update:modelValue', pincode.value); // Default cmp compatibility with v-model
 
+  const { autoBlur, autofocusOnFirstEmpty: ruleEmpty, autofocusCircle } = props;
   const isLastInputFocused = +id === props.digits - 1;
+
   if (isComplete.value) {
-    return (isLastInputFocused && props.autofocusCircle) ?
-      focusInputById(0) : focusNextInput();
+    const curInputEl = inputsRefs.value[id];
+    if (autoBlur === 'always') return curInputEl.blur();
+    if (isLastInputFocused) {
+      if (autoBlur === 'onLastFilled') return curInputEl.blur();
+      if (autofocusCircle) return focusInputById(0);
+    }
+    return focusNextInput();
   }
 
-  const rule = props.autofocusOnFirstEmpty;
-  if ((rule === 'always' && !isRightFilled.value) ||
-    (rule === 'onLastFilled' && !isLastInputFocused) ||
-    rule === 'never') return focusNextInput();
+  if ((ruleEmpty === 'always' && !isRightFilled.value) ||
+    (ruleEmpty === 'onLastFilled' && !isLastInputFocused) ||
+    ruleEmpty === 'never') return focusNextInput();
 
   if (firstEmptyInputId.value !== false) focusInputById(firstEmptyInputId.value);
 };
