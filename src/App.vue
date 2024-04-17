@@ -1,5 +1,5 @@
 <script setup>
-import VuePincodeInput from './plugin/PincodeInput.vue';
+import VuePincodeOtp from './plugin/PincodeInput.vue';
 import { ref } from 'vue';
 
 const pincode = ref('');
@@ -20,7 +20,7 @@ const inputValue = ref('');
     <div class="default shadow">
       <h2>Default (4 digits), autofocus & complete events</h2>
       <hr />
-      <VuePincodeInput
+      <VuePincodeOtp
         v-model="pincode"
         autofocus
         @pincodeInputComplete="isPinComplete = true"
@@ -29,7 +29,7 @@ const inputValue = ref('');
       <div class="preview">pincode: {{ pincode }}</div>
       <div class="preview">is pin complete: {{ isPinComplete }}</div>
       <div class="code-preview">
-        {{ `<VuePincodeInput
+        {{ `<VuePincodeOtp
   v-model="pincode"
   @pincodeInputComplete="isPinComplete = true"
   @pincodeInputIncomplete="isPinComplete = false"
@@ -39,7 +39,7 @@ const inputValue = ref('');
     <div class="custom shadow">
       <h2>Custom style, 6 digits, no autofocus & never autofocus on first empty field</h2>
       <hr />
-      <VuePincodeInput
+      <VuePincodeOtp
         v-model="custom"
         :digits="+6"
         autofocusOnFirstEmpty="never"
@@ -52,7 +52,7 @@ const inputValue = ref('');
       <div><i>Note: you can see never autofocus on first empty field
         if you start typing from second field</i></div>
       <div class="code-preview">
-        {{ `<VuePincodeInput
+        {{ `<VuePincodeOtp
   :digits="+6"
   autofocusOnFirstEmpty="never"
   input-class="rounded-full w-18 h-18 text-3xl
@@ -65,7 +65,7 @@ const inputValue = ref('');
     <div class="default shadow">
       <h2>Preview secure, errors counter & strict control of inputs</h2>
       <hr />
-      <VuePincodeInput
+      <VuePincodeOtp
         v-model="secure"
         :digits="+4"
         :preview="200"
@@ -88,7 +88,7 @@ const inputValue = ref('');
       <div class="preview">current input value: "{{ inputValue }}"</div>
       <div class="preview">errors: {{ errorCounter }} </div>
       <div class="code-preview">
-        {{ `<VuePincodeInput
+        {{ `<VuePincodeOtp
   v-model="secure"
   :digits="+4"
   :preview="200"

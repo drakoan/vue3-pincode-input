@@ -1,8 +1,8 @@
-# vue3-pincode-input
+# vue3-pincode-otp
 
-> Pincode input component for Vue 3 [Live demo](https://drakoan.github.io/vue3-pincode-input/)
+> Pincode input component for Vue 3 [Live demo](https://drakoan.github.io/vue3-pincode-otp/)
 
-![vue3-pincode-input](https://drakoan.github.io/vue3-pincode-input/banner.png)
+![vue3-pincode-otp](https://drakoan.github.io/vue3-pincode-otp/banner.png)
 
 
 ## Table of Contents
@@ -16,7 +16,7 @@
 
 ## Demo
 
-Demo on [GitHub Pages](https://drakoan.github.io/vue3-pincode-input/)
+Demo on [GitHub Pages](https://drakoan.github.io/vue3-pincode-otp/)
 
 ## Features
 
@@ -53,29 +53,29 @@ Demo on [GitHub Pages](https://drakoan.github.io/vue3-pincode-input/)
 ## Usage
 
 ```
-  npm i vue3-pincode-input
+  npm i vue3-pincode-otp
 ```
 
 or with yarn
 
 ```
-  yarn add vue3-pincode-input
+  yarn add vue3-pincode-otp
 ```
 
 Import for use component:
 
 ```
-import VuePincodeInput from 'vue3-pincode-input';
+import VuePincodeOtp from 'vue3-pincode-otp';
 ```
 
 ```
-<VuePincodeInput v-model="pincode" />
+<VuePincodeOtp v-model="pincode" />
 ```
 
 Also can use your class for custom component [See more props](#props)
 
 ```
-<VuePincodeInput
+<VuePincodeOtp
   v-model="pincode"
   input-class="rounded-full w-18 h-18 text-3xl text-gray-500 border-2 border-gray-200 shadow"
   success-class="border-2 border-green-400"

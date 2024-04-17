@@ -1,3 +1,3 @@
 // plugin/main.js
-import VuePincodeInput from './PincodeInput.vue';
-export default VuePincodeInput;
+import VuePincodeOtp from './PincodeInput.vue';
+export default VuePincodeOtp;

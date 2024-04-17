@@ -1,5 +1,5 @@
 {
-  "name": "vue3-pincode-input",
+  "name": "vue3-pincode-otp",
   "version": "1.0.0",
   "description": "Pincode input component for Vue3 applications.",
   "main": "dist/vue-pincode-input.umd.js",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/siriphonNott/vue3-pincode-input.git"
+    "url": "git+https://github.com/drakoan/vue3-pincode-otp.git"
   },
   "keywords": [
     "vue",
@@ -33,7 +33,7 @@
     "drakoan <[drakoan@gmail.com](mailto:drakoan@gmail.com)>"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/siriphonNott/vue3-pincode-input#readme",
+  "homepage": "https://github.com/siriphonNott/vue3-pincode-otp#readme",
   "devDependencies": {
     "@stylistic/eslint-plugin-js": "^1.7.0",
     "@stylistic/eslint-plugin-migrate": "^1.7.0",
